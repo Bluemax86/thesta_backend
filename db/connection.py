@@ -1,10 +1,9 @@
-import psycopg2
-
-def get_db_connection():
-    conn = psycopg2.connect(
-        dbname="thesta_db",
-        user="skypirate",
-        host="localhost",
-        port="5432"
-    )
-    return conn
+from python_dotenv import load_dotenv
+load_dotenv()
+conn = psycopg2.connect(
+    database=os.getenv("DB_NAME"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    host=os.getenv("DB_HOST"),
+    port=os.getenv("DB_PORT")
+)

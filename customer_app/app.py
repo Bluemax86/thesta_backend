@@ -109,6 +109,8 @@ def chat():
     if data is None:
         return jsonify({"error": "Invalid JSON payload"}), 400
     inquiry = data.get('inquiry')
+    if not inquiry or not isinstance(inquiry, str) or len(inquiry) > 500:
+      return jsonify({"error": "Invalid inquiry"}), 400
     product_type, check_in_date, nights = parse_inquiry(inquiry)
     products = get_products_by_type(product_type, check_in_date is not None)
 

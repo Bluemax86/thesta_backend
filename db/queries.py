@@ -63,16 +63,21 @@ def get_customer_id_by_user_id(user_id):
 def create_user(email, password_hash, user_role):
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute("""
-        INSERT INTO users (email, password_hash, user_role, last_logged_in)
-        VALUES (%s, %s, %s, CURRENT_TIMESTAMP)
-        RETURNING user_id
-    """, (email, password_hash, user_role))
-    user_id = cur.fetchone()[0]
-    conn.commit()
-    cur.close()
-    conn.close()
-    return user_id
+    try:
+      cur.execute("""
+          INSERT INTO users (email, password_hash, user_role, last_logged_in)
+          VALUES (%s, %s, %s, CURRENT_TIMESTAMP)
+          RETURNING user_id
+      """, (email, password_hash, user_role))
+      user_id = cur.fetchone()[0]
+      conn.commit()
+      return user_id
+    except psycopg2.Error as e:
+      conn.rollback()
+      raise Exception(f"Database error: {str(e)}")
+    finally:
+      cur.close()
+      conn.close()
 
 def create_customer(user_id, first_name, last_name, email, phone):
     conn = get_db_connection()
