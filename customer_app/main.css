@@ -1,0 +1,22 @@
+:root {
+  --ibis-feather-gray: #D3CBBE;
+  --hearth-flame-orange: #F28C38;
+  --forest-moss-green: #6B705C;
+  --deep-sky-blue: #3A6EA5;
+  --warm-sand-beige: #E8D5B5;
+  --charcoal-earth: #2F2F2F;
+}
+
+body {
+  background-color: var(--ibis-feather-gray);
+  color: var(--charcoal-earth);
+}
+
+header {
+  background-color: var(--deep-sky-blue);
+}
+
+button {
+  background-color: var(--hearth-flame-orange);
+  color: var(--charcoal-earth);
+}
