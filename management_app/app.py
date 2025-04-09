@@ -38,7 +38,9 @@ def signup():
         password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
         try:
             create_user(email, password_hash, 'admin')
+            user = get_user_by_email(email, 'admin')
             session['logged_in'] = True
+            session['user_id'] = user[0]
             session.modified = True  # Force session modification
             return jsonify({"message": "Signup successful"}), 200
         except Exception as e:
@@ -55,6 +57,7 @@ def login():
         print('User:', user)  # Debug log
         if user and bcrypt.checkpw(password.encode('utf-8'), user[1].encode('utf-8')):
             session['logged_in'] = True
+            session['user_id'] = user[0]
             session.modified = True  # Force session modification
             print('Session after login:', session)  # Debug log
             update_last_logged_in(email)
