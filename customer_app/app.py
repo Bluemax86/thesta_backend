@@ -7,12 +7,18 @@ from flask import Flask, request, session, jsonify
 from flask_cors import CORS
 from datetime import datetime, timedelta
 import bcrypt
-from dotenv import load_dotenv
+
+# Manually load .env file
+env_path = os.path.join(os.path.dirname(__file__), '.env')
+with open(env_path, 'r') as f:
+    for line in f:
+        if line.strip() and not line.startswith('#'):
+            key, value = line.strip().split('=', 1)
+            os.environ[key] = value
+
 from db import (get_products_by_type, create_reservation, get_reservation_by_id,
                 get_customer_id_by_user_id, create_user, create_customer,
                 get_user_by_email, update_last_logged_in)
-
-load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
