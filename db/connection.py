@@ -1,9 +1,14 @@
 import psycopg2
 import os
-from python_dotenv import load_dotenv
 
-load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
-
+# Manually load .env file
+env_path = os.path.join(os.path.dirname(__file__), '.env')
+with open(env_path, 'r') as f:
+    for line in f:
+        if line.strip() and not line.startswith('#'):
+            key, value = line.strip().split('=', 1)
+            os.environ[key] = value
+            
 def get_db_connection():
     try:
         conn = psycopg2.connect(

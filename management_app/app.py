@@ -3,15 +3,21 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 
-from flask import Flask, request, session, jsonify
+from flask_socketiolask import Flask, request, session, jsonify
 from flask_cors import CORS
 import bcrypt
-from dotenv import load_dotenv
+
+# Manually load .env file
+env_path = os.path.join(os.path.dirname(__file__), '.env')
+with open(env_path, 'r') as f:
+    for line in f:
+        if line.strip() and not line.startswith('#'):
+            key, value = line.strip().split('=', 1)
+            os.environ[key] = value
+
 from db import (create_user, get_user_by_email, update_last_logged_in,
                 get_reservations, get_total_reservations, get_total_revenue,
                 get_revenue_by_type)
-
-load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
